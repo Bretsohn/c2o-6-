@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>C2O 정회원 챌린지 제비뽑기</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+      padding-top: 80px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 40px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      margin: 10px auto;
+      padding: 10px 20px;
+      width: 240px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      font-size: 1.2rem;
+    }
+    .winner {
+      color: green;
+      font-weight: bold;
+    }
+    .loser {
+      color: #aaa;
+    }
+    #result {
+      display: none;
+    }
+    #wait {
+      font-size: 1.3rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <h1>C2O 정회원 챌린지 제비뽑기 🎉</h1>
+  <div id="wait">오늘 오후 10시 30분에 결과가 공개됩니다.</div>
+  <div id="result">
+    <ul id="ladder-result"></ul>
+  </div>
+
+  <script>
+    const participants = ["허진철", "양우제", "손성욱", "최준석", "한인구", "이승재"];
+    
+    // 로딩 시점에 랜덤 당첨자 한 명 고정
+    const winner = participants[Math.floor(Math.random() * participants.length)];
+    
+    const now = new Date();
+    const releaseTime = new Date();
+    releaseTime.setHours(22, 30, 0, 0); // 오늘 22:30 (오후 10시 30분)
+
+    // 결과 렌더링 함수
+    function showResult() {
+      const list = document.getElementById("ladder-result");
+      participants.forEach(name => {
+        const li = document.createElement("li");
+        if (name === winner) {
+          li.textContent = `${name} 🎯 당첨!`;
+          li.classList.add("winner");
+        } else {
+          li.textContent = `${name} ❌ 꽝`;
+          li.classList.add("loser");
+        }
+        list.appendChild(li);
+      });
+      document.getElementById("wait").style.display = "none";
+      document.getElementById("result").style.display = "block";
+    }
+
+    // 시간 조건 확인
+    if (now >= releaseTime) {
+      showResult();
+    } else {
+      // 10:30이 되면 자동으로 갱신
+      const delay = releaseTime - now;
+      setTimeout(showResult, delay);
+    }
+  </script>
+</body>
+</html>
